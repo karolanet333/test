@@ -1,0 +1,22 @@
+$info:                #44c8f5;
+$danger:              #da4d52;
+
+.HistHead{
+    background-color: $danger;
+    color: white;
+}
+
+#dividirHito{
+  margin-left: 78%;
+  margin-top: -77px;
+}
+
+#txtDividirCant{
+  margin-left: 65%;
+  margin-top: -77px;
+  max-width:50px;
+}
+
+.hidden{
+  visibility: hidden;
+}

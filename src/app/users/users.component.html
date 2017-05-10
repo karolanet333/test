@@ -1,0 +1,9 @@
+<!--
+<div class="dropdown-menu dropdown-menu-right" dropdownMenu aria-labelledby="simple-dropdown" *ngFor="let user of users">
+  <a class="dropdown-item" href="#" (click)="setUser(user)" ><i class="fa fa-lock"></i> {{user.Name}}</a>
+</div>
+-->
+
+<select class="dropdown-menu dropdown-menu-right" *ngFor="let user of users">
+  <option [value]="user.id" (click)="setUser(user)">{{user.Name}}</option>
+</select>

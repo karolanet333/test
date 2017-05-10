@@ -1,0 +1,441 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card" *ngIf="customersRoutingService.showMilestoneDetail && _milestone != null">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Solicitud de Facturación</h5>
+            </div>
+            <form #f="ngForm"  *ngIf="_milestone != null"><!--(ngSubmit)="submit()"-->
+              <div class="card-block">
+
+                  <div class="row">
+                    <div class="col-sm-12 col-lg-12 card card-inverse card-primary margin-0">
+                      <h6>DATOS DEL CONTRATO</h6>
+                    </div>
+                    <div class="col-sm-4 card margin-0">
+                      <label class="form-control-label">Razón Social:</label>
+                    </div>
+                    <div class="col-sm-8 card margin-0">
+                      <label *ngIf="_customer" class="form-control-label">{{_customer.Name}}</label>
+                    </div>
+                    <div class="col-sm-4 card margin-0">
+                      <label class="form-control-label">Contacto del Cliente:</label>
+                    </div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+
+                        <!--CONTACTO DEL CLIENTE-->
+                        <div class="col-sm-4 card margin-0">
+                          {{_milestone.CustomerContact}}
+                        </div>
+                        <div class="col-sm-3 card margin-0">
+                          <label class="form-control-label">Teléfono:</label>
+                        </div>
+
+                        <!--TELEFONO-->
+                        <div class="col-sm-5 card margin-0">{{_milestone.CustomerPhone}}</div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-12 card card-inverse card-primary margin-0">
+                      <h6>DATOS DEL DOCUMENTO</h6>
+                    </div>
+
+                    <div class="col-sm-4 margin-0">
+                      <div class="row">
+                        <div class="col-sm-12 card margin-0">
+                          <label class="form-control-label">Nº de O/C o Nº de Contrato:</label>
+                        </div>
+                        <div class="col-sm-12 card margin-0">
+                          <label class="form-control-label">Tipo de Documento:</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 margin-0">
+                          <div class="row">
+                            <div class="col-sm-12 card margin-0">
+
+                              <!--CONTRATO-->
+                              <input type="text" class="form-control no-border control-short text-right" name="ContractNumber" [(ngModel)]="_milestone.ContractNumber">
+                            </div>
+                            <div class="col-sm-12 card margin-0">
+
+                              <!--DOCUMENT TYPE-->
+                              <select class="form-control no-border control-short" name="IdDocumentType" [(ngModel)]="_milestone.IdDocumentType">
+                                <option *ngFor="let docType of documentTypes$ | async" [value]="docType.Id">{{docType.Name}}</option>
+                              </select>
+                            </div>
+                          </div> 
+                        </div>
+                        <div class="col-sm-3 card margin-0">
+                          <label class="form-control-label">Proyecto:</label>
+                        </div>
+
+                        <!--PROJECT NAME-->
+                        <div class="col-sm-5 card margin-0"> 
+                          {{_milestone.Project.Name}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 card margin-0">
+                      <label class="form-control-label">Nº DE IMPUTACIÓN:</label>
+                    </div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 margin-0">
+                          <div class="row">
+                            <div class="col-sm-12 card margin-0">
+                              <input type="text" class="form-control no-border control-short text-right">
+                            </div>
+                            <!--<div class="col-sm-6 card margin-0">
+                              <label class="form-control-label">&nbsp;</label>
+                            </div>-->
+                          </div>
+                        </div>
+                        <div class="col-sm-3 card margin-0 text-right">
+                          <label class="form-control-label"></label>
+                        </div>
+                        <div class="col-sm-5 margin-0">
+                          <div class="row">
+                            <div class="col-sm-6 card card-inverse card-primary margin-0 border-card">
+                              <label class="form-control-label">&nbsp;</label>
+                            </div>
+                            <div class="col-sm-6 card card-inverse card-primary margin-0">
+                              <label class="form-control-label">&nbsp;</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <table class="table table-bordered" style="margin-bottom: 0px;">
+                      <thead>
+                        <tr>
+                          <th class="text-center" style="width: 44.5%;">Detalle</th>
+                          <th class="text-center" style="width: 11.2%;">Moneda</th>
+                          <th class="text-center" style="width: 16.7%;">Cantidad</th>
+                          <th class="text-center" style="width: 14%;">Precio Unit.</th>
+                          <th class="text-center">TOTAL</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="text-center" *ngFor="let d of _milestoneDetails; let i = index">
+                          <td><input type="text" class="form-control no-border control-xs" id="Detail{{i}}_Detalle" name="Detail{{i}}_Detalle" (change)="addDetail(i)" [(ngModel)]="_milestoneDetails[i].Detail"></td>
+                          <td>
+                            <select class="form-control no-border control-short" name="Detail{{i}}_IdCurrencySign" [(ngModel)]="_milestoneDetails[i].IdCurrencySign">
+                                <option *ngFor="let curr of currencySigns" [value]="curr.Id">{{curr.Name}}</option>
+                            </select>
+                          </td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail{{i}}_Quantity" name="Detail{{i}}_Quantity" (change)="subtotal(i); addDetail(i)" [(ngModel)]="_milestoneDetails[i].Quantity"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail{{i}}_UnitPrice" name="Detail{{i}}_UnitPrice" (change)="subtotal(i); addDetail(i)" [(ngModel)]="_milestoneDetails[i].UnitPrice"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail{{i}}_Total" name="Detail{{i}}_Total" readonly [(ngModel)]="_milestoneDetails[i].SubTotal"></td>
+                          
+                        </tr>
+
+                        <!--
+                        <tr class="text-center">
+                          <td><input type="text" class="form-control no-border control-xs" name="Detail2_Detalle" [(ngModel)]="_milestoneDetails[1].Detail"></td>
+                          <td>
+                            <select class="form-control no-border control-short" name="Detail1_IdCurrencySign" [(ngModel)]="_milestoneDetails[1].IdCurrencySign">
+                                <option *ngFor="let curr of currencySigns" [value]="curr.Id">{{curr.Name}}</option>
+                            </select>
+                          </td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail2_Quantity" name="Detail2_Quantity" [(ngModel)]="_milestoneDetails[1].Quantity"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail2_UnitPrice" name="Detail2_UnitPrice" [(ngModel)]="_milestoneDetails[1].UnitPrice"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail2_Total" name="Detail2_Total" [(ngModel)]="_milestoneDetails[1].SubTotal"></td>
+                        </tr>
+                        <tr class="text-center">
+                          <td><input type="text" class="form-control no-border control-xs" ></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" ></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail3_Quantity" (change)="subtotal(1)"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail3_UnitPrice" (change)="subtotal(1)"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail3_Total" (change)="total()" value="0"></td>
+                        </tr>
+                        <tr class="text-center">
+                          <td><input type="text" class="form-control no-border control-xs"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" ></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail4_Quantity" (change)="subtotal(2)"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail4_UnitPrice" (change)="subtotal(2)"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="Detail4_Total" (change)="total()" value="0"></td>
+                        </tr>
+                        <tr class="text-center">
+                          <td><input type="text" class="form-control no-border control-xs"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" ></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="quantity3" (change)="subtotal(3)"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="price3" (change)="subtotal(3)"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="subtotal3" (change)="total()" value="0"></td>
+                        </tr>
+                        <tr class="text-center">
+                          <td><input type="text" class="form-control no-border control-xs"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" ></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="quantity4" (change)="subtotal(4)"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="price4" (change)="subtotal(4)"></td>
+                          <td><input type="text" class="form-control no-border control-xs text-right" id="subtotal4" (change)="total()" value="0"></td>
+                        </tr>-->
+                      </tbody>
+                    </table>
+                    <div class="col-sm-4 card card-inverse card-primary margin-0"></div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 card card-inverse card-primary margin-0"></div>
+                        <div class="col-sm-3 card margin-0 no-border-right">
+                            <label class="form-control-label">Importe Bruto:</label> 
+                        </div>
+                        <div class="col-sm-5 margin-0">
+                          <div class="row">
+                            <div class="col-sm-6 card margin-0 no-border-left">
+                              <label class="form-control-label">&nbsp;</label>
+                            </div>
+                            <div class="col-sm-6 card margin-0 text-center">
+
+                              <!--IMPORT BRUTO-->
+                              <input type="text" class="form-control no-border control-xs text-right" name="ImporteBruto" [(ngModel)]="_milestone.ImporteBruto">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 card card-inverse card-primary margin-0"></div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 card card-inverse card-primary margin-0"></div>
+                        <div class="col-sm-3 card margin-0 no-border-right">
+                            <label class="form-control-label">I.V.A. 21%:</label> 
+                        </div>
+                        <div class="col-sm-5 margin-0">
+                          <div class="row">
+                            <div class="col-sm-6 card margin-0 no-border-left">
+                              <label class="form-control-label">&nbsp;</label>
+                            </div>
+                            <div class="col-sm-6 card margin-0 text-center">
+
+                              <!--IVA 21%-->
+                              <input type="text" class="form-control no-border control-xs text-right" name="Iva21" [(ngModel)]="_milestone.Iva21">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 card card-inverse card-primary margin-0"></div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 card card-inverse card-primary margin-0"></div>
+                        <div class="col-sm-3 card margin-0 no-border-right">
+                            <label class="form-control-label">Importe Total:</label> 
+                        </div>
+                        <div class="col-sm-5 margin-0">
+                          <div class="row">
+                            <div class="col-sm-6 card margin-0 no-border-left">
+                              <label class="form-control-label">&nbsp;</label>
+                            </div>
+                            <div class="col-sm-6 card margin-0 text-center">
+
+                              <!--IMPORTE TOTAL-->
+                              <input type="text" class="form-control no-border control-xs text-right" name="ImporteBrutoMasIva21" [(ngModel)]="_milestone.ImporteBrutoMasIva21">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4 card margin-0">
+                      <label class="form-control-label">Forma de Pago:</label>
+                      
+                    </div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 margin-0">
+                          <div class="row">
+                            <div class="col-sm-12 card margin-0">
+
+                              <!--FORMA DE PAGO-->
+                              <select class="form-control no-border control-short" name="IdPaymentMethod" [(ngModel)]="_milestone.IdPaymentMethod">
+                                <option *ngFor="let payment of paymentMethods$ | async" [value]="payment.Id">{{payment.Name}}</option>
+                              </select>
+
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="col-sm-3 card  card-inverse card-primary margin-0">
+                          <label class="form-control-label">&nbsp;</label>
+                        </div>
+                        <div class="col-sm-5 margin-0">
+                          <div class="row">
+                            <div class="col-sm-6 card margin-0">
+                              <label class="form-control-label">Plazo:</label>
+                            </div>
+                            <div class="col-sm-6 card margin-0">
+
+                              <!--PLAZO-->
+                              <input type="text" class="form-control no-border control-xs text-right" name="Plazo" [(ngModel)]="_milestone.Plazo">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 card margin-0">
+                      <label class="form-control-label">Piezas Adjuntas:</label>
+                    </div>
+                    <div class="col-sm-8 card margin-0">
+
+                      <!--FILE IMPORT-->
+
+                      <!--[url]="config.UrlApi + '/UploadFile'" 
+                        [authorization]="config.Authorization" -->
+
+                      <upload-file #uploadFilesComponent 
+                        [idHito]="idHito" 
+                        [idCustomer]="idCustomer" 
+                        [idService]="idService" 
+                        [idProject]="idProject"></upload-file>
+
+                      <!--<label class="btn btn-danger btn-file">
+                          Importar Archivos <input type="file" style="display: none;" accept=".pdf,.doc,.docx"> 
+                      </label>-->
+
+                      <label class="form-control-label">&nbsp;</label>
+                    </div>
+                    <div class="col-sm-12 col-lg-12 card card-inverse card-primary margin-0">
+                      <h5>Información Impositiva. Servicios prestados en:</h5>
+                    </div>
+                    <div class="col-sm-4 card margin-0" style="border-right: transparent;">
+                      <label class="form-control-label">Capital %:</label>
+                    </div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 card margin-0 no-border-left">
+                          
+                        </div>
+                        <div class="col-sm-3 card margin-0 text-center">
+
+                          <!--CAPITAL-->
+                          <input type="text" class="form-control no-border control-small text-right" name="ImpCapital" [(ngModel)]="_milestone.ImpCapital">
+                        </div>
+                        <div class="col-sm-5 card card-inverse card-primary border-top margin-0"></div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 card margin-0" style="border-right: transparent;">
+                      <label class="form-control-label">Provincia de Bs. As. %:</label>
+                    </div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 card margin-0 no-border-left">
+                          
+                        </div>
+                        <div class="col-sm-3 card margin-0 text-right">
+                          
+                          <!--Provincia de Bs. As.-->
+                          <input type="text" class="form-control no-border control-small text-right" name="ImpProvBsAs" [(ngModel)]="_milestone.ImpProvBsAs">
+                        </div>
+                        <div class="col-sm-5 card card-inverse card-primary border-top margin-0"></div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 card margin-0" style="border-right: transparent;">
+                      <label class="form-control-label">Otras Provincias % (detallar % por cada provincia):</label>
+                    </div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 card margin-0 no-border-left">
+                          
+                        </div>
+                        <div class="col-sm-3 card margin-0 text-right">
+
+                          <!--Otras Provincias %-->
+                          <input type="text" class="form-control no-border control-small text-right" name="ImpOtrasProv_1" [(ngModel)]="_milestone.ImpOtrasProv_1">
+                        </div>
+                        <div class="col-sm-5 card margin-0">
+                         
+                          <!--COMBO PROVINCIAS 1-->
+                          <select class="form-control no-border control-tall" name="IdImpProv_1" [(ngModel)]="_milestone.IdImpProv_1">
+                            <option *ngFor="let prov of provinces" [value]="prov.Id">{{prov.Name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 card margin-0" style="border-right: transparent;">
+                      <label class="form-control-label">Otras Provincias % (detallar % por cada provincia):</label>
+                    </div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 card margin-0 no-border-left">
+                          
+                        </div>
+                        <div class="col-sm-3 card margin-0 text-right">
+
+                          <!--Otras Provincias 2 %-->
+                          <input type="text" class="form-control no-border control-small text-right" name="ImpOtrasProv_2" [(ngModel)]="_milestone.ImpOtrasProv_2">
+                        </div>
+                        <div class="col-sm-5 card margin-0">
+
+                          <!--COMBO PROVINCIAS 2-->
+                          <select class="form-control no-border control-tall" name="IdImpProv_2" [(ngModel)]="_milestone.IdImpProv_2">
+                            <option *ngFor="let prov of provinces" [value]="prov.Id">{{prov.Name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 card margin-0" style="border-right: transparent;">
+                      <label class="form-control-label">Otras Provincias % (detallar % por cada provincia):</label>
+                    </div>
+                    <div class="col-sm-8 margin-0">
+                      <div class="row">
+                        <div class="col-sm-4 card margin-0 no-border-left">
+                          
+                        </div>
+                        <div class="col-sm-3 card margin-0 text-right">
+
+                          <!--Otras Provincias 3 %-->
+                          <input type="text" class="form-control no-border control-small text-right" name="ImpOtrasProv_3" [(ngModel)]="_milestone.ImpOtrasProv_3">
+                        </div>
+                        <div class="col-sm-5 card margin-0">
+
+                          <!--COMBO PROVINCIAS 3-->
+                          <select class="form-control no-border control-tall" name="IdImpProv_3" [(ngModel)]="_milestone.IdImpProv_3">
+                            <option *ngFor="let prov of provinces" [value]="prov.Id">{{prov.Name}}</option>
+                          </select> 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-12 card card-inverse card-primary margin-0">
+                      <h5>Instrucciones Particulares:</h5>
+                    </div>
+                    <div class="col-sm-12 col-lg-12 card margin-0">
+                      
+                      <!--COMMENTS-->
+                      <textarea class="form-control no-border" name="Comments" [(ngModel)]="_milestone.Comments"></textarea>
+                    </div>
+                    <div class="col-sm-4 card card-inverse card-primary margin-0">
+                      <div>&nbsp;</div>
+                      <h6>Nombre del Solicitante</h6>
+                      <div>&nbsp;</div>
+                    </div>
+                    <div class="col-sm-8 card margin-0">
+                      <div>&nbsp;</div>
+
+                      <!--NOMBRE DEL SOLICITANTE-->
+                      <input type="text" class="form-control no-border control-short" name="ApplicantName" [(ngModel)]="_milestone.ApplicantName">
+                    </div>
+
+                    <div class="col-sm-12 vertical-space text-right" >
+                      <div class="checkbox text-big">
+                        <label><input type="checkbox" name="Cobrado" [(ngModel)]="_milestone.Cobrado" [disabled]="!userConfigService.bPuedeEstarCobrado"><span [ngClass]="{'span-enabled': userConfigService.bPuedeEstarCobrado, 'span-disabled': !userConfigService.bPuedeEstarCobrado}" >&nbsp; Cobrado</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 vertical-space text-right" >
+
+                      <button *ngIf="userConfigService.bShowGenerate" id="generar" class="btn btn-primary btn-success bordes-redondeados h-space-l" (click)="generar()" [disabled]="!userConfigService.bCanGenerate" >{{userConfigService.CanGenerateButtonText}}</button>
+
+                      <button *ngIf="userConfigService.bShowRefuse" id="rechazar" class="btn btn-primary btn-danger bordes-redondeados h-space-l" (click)="rechazar()" [disabled]="!userConfigService.bCanRefuse" >Rechazar</button>
+                    </div>
+
+
+                  </div>
+
+              </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,60 @@
+<header class="app-header navbar">
+  <button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up" type="button">&#9776;</button>
+  <a class="navbar-brand" href="#"></a>
+  
+  <ul id="ModuleName" class="nav navbar-nav hidden-md-down">
+    <li class="nav-item px-1">
+      <a class="nav-link nav-link-item" [routerLink]="['/customers']">Clientes</a>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav ml-auto">
+    <li class="nav-item dropdown" dropdown (onToggle)="toggled($event)">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle>
+        <img src="assets/img/avatars/user.png" class="img-avatar" alt="admin@bootstrapmaster.com">
+        <span class="hidden-md-down">{{userConfigService.user().Name}}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" dropdownMenu aria-labelledby="simple-dropdown">
+        <div *ngFor="let user of users"><a class="dropdown-item" (click)="setUser(user)"><i class="fa fa-lock"></i> {{user.Name}} </a></div>
+      </div>
+      <!--<div class="dropdown-menu dropdown-menu-right" dropdownMenu aria-labelledby="simple-dropdown">
+        
+      </div>-->
+    </li>
+    <li class="nav-item hidden-md-down">
+      &nbsp;
+    </li>
+    <li class="nav-item hidden-md-down">
+      <div class="btn-toolbar langs" role="toolbar" aria-label="">
+        <div class="btn-group mr-1" data-toggle="buttons" aria-label="">
+          <label class="btn btn-outline-primary active">
+            <input type="radio" name="options" id="option1"> ES
+          </label>
+          <label class="btn btn-outline-primary">
+            <input type="radio" name="options" id="option2" checked> EN
+          </label>
+        </div>
+      </div>
+    </li>
+  </ul>
+  
+</header>
+
+<div class="app-body">
+  <!-- Main content -->
+  <main class="main">
+
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+      <breadcrumbs></breadcrumbs>
+    </ol>
+
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div><!-- /.conainer-fluid -->
+  </main>
+
+</div>
+
+<footer class="app-footer">
+  <a href="http://www.sofrecom.com.ar/">Sofrecom SA</a> &copy; 2017.
+</footer>

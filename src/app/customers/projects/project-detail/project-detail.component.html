@@ -1,0 +1,421 @@
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" *ngIf="customersRoutingService.showProjectDetail">
+            <div class="card-header">
+                Detalles de Proyecto
+            </div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Nombre</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.Name }} &nbsp;</p>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Cliente</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_customer">{{ _customer.Name }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-3 form-control-label">Descripción</label>
+                              <div class="col-md-9">
+                                <p class="form-control" *ngIf="_project">{{ _project.Description }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Fecha de Inicio</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.StartDate | date: 'dd/MM/yyyy' }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Fecha de Finalización</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.EndDate | date: 'dd/MM/yyyy' }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Gerente del Proyecto</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.ProjectManager }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Ingresos Estimados</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.EstimatedEarnings }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Analítica</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.Analytics }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Orden de compra</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.PurchaseOrder }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-12 col-lg-12">
+                              <div class="form-group row">
+                                <label class="col-md-2 form-control-label">Link a la oportunidad que dio origen a ese proyecto</label>
+                                <div class="col-md-10">
+                                  <p class="form-control" *ngIf="_project">{{ _project.Link }} &nbsp;</p>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      &nbsp;
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <h4 class="card-title mb-0">Hitos de Facturación
+                        <button class="btn btn-success pull-right" data-toggle="modal" (click)="myModal.show()" [disabled]="!this.userConfigService.Hito_CanGenerateNew()" title="Nuevo Hito"><span class="fa fa-plus"></span>&nbsp;</button>
+                        <!--
+                        <button class="btn btn-success pull-right h-space" data-toggle="modal" (click)="histActionModal.show()" [disabled]="!this.userConfigService.Hito_CanGenerateNew()" title="Historico de Acciones"><span class="fa fa-search"></span>&nbsp;</button>
+                        -->
+                      </h4>
+
+                    </div>
+                    <!--<div class="col-sm-12 col-md-10 col-lg-10"></div>-->
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+
+                    </div>
+                </div>
+                <div>&nbsp;</div>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Fecha</th>
+                      <th>Monto</th>
+                      <th>Estado</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="_milestones">
+                    <tr *ngFor="let milestone of _milestones; let i = index">
+                      <td>{{ milestone.Name }}</td>
+                      <td>{{ milestone.ScheduledDate | date: 'dd/MM/yyyy' }}</td>
+                      <td>{{ milestone.Monto }}</td>
+                      <td class="table-button-width">
+                        <span class="badge badge-success">{{ milestone.SolFacState.ShortName }}</span>
+                      </td>
+                      <td class="table-button-width text-center">
+                        <a class="btn btn-success btn-block max-button-width text-center" title="Ver Solicitud de Facturación" [routerLink]="['./hito', milestone.Id ]"><img [src]="imgVerSolFac"/> </a>
+                      </td>
+                      <td class="table-button-width text-center">
+                        <button class="btn btn-danger btn-block max-button-width text-center" title="Editar" [disabled]="!userConfigService.Hito_CanEdit()" (click)="editMilestone(i); editHito.show()"><img [src]="imgEdit"/> </button>
+                      </td>
+                      <td class="table-button-width text-center">
+                        <button class="btn btn-info btn-block max-button-width text-center" title="Ver Historial" (click)="filter_milestoneHist(milestone.Id);histModal.show()"><img [src]="imgHistory6" /> </button>
+                      </td>
+                      <td class="table-button-width text-center">
+                        <button class="btn btn-warning btn-block max-button-width text-center table-button-height" title="Ver Historial de Acciones" (click)="getMilestone(i);histActionXHitoModal.show()"><span class="fa fa-search"></span> </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>
+
+<div bsModal #histActionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="histActionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Historico de acciones de Hitos</h4>
+        <button type="button" class="close" (click)="histActionModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="container">
+          <div class="container">
+              <div class="row">
+                  <table class="table table-striped" *ngIf="_milestoneHists_filtered">
+                    <thead>
+                      <tr>
+                        <th class="HistHead">Hito</th>
+                        <th class="HistHead">Acción</th>
+                        <th class="HistHead">Usuario</th>
+                        <th class="HistHead">Mnt Ante</th>
+                        <th class="HistHead">Mnt Nuevo</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let action of _milestonesActionHists">
+                        <td>{{action.BillingMilestone.Name}}</td>
+                        <td>{{action.SolFacActionState.Name}}</td>
+                        <td>{{action.User.Name}}</td>
+                        <td class="text-right">{{action.MontoAnte}}</td>
+                        <td class="text-right">{{action.MontoNuevo}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #histActionXHitoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="histActionXHitoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" >Historico de acciones del Hito: <span *ngIf="_milestone">{{_milestone.Name}} </span></h4>
+        <button type="button" class="close" (click)="histActionXHitoModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="container">
+          <div class="container">
+              <div class="row">
+
+                  <table class="table table-striped" *ngIf="_milestone && _milestone.SolFacActionHists">
+                    <thead>
+                      <tr>
+                        <th class="HistHead">Acción</th>
+                        <th class="HistHead">Usuario</th>
+                        <th class="HistHead text-right">Mnt Ante</th>
+                        <th class="HistHead text-right">Mnt Nuevo</th>
+                        <th class="HistHead">Hito Orig</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let action of _milestone.SolFacActionHists">
+                        <td><span *ngIf="action.SolFacActionState">{{action.SolFacActionState.Name}}</span></td>
+                        <td><span *ngIf="action.User">{{action.User.Name}}</span></td>
+                        <td class="text-right">{{action.MontoAnte}}</td>
+                        <td class="text-right">{{action.MontoNuevo}}</td>
+                        <td><span *ngIf="action.BillingMilestoneSource">{{action.BillingMilestoneSource.Name}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+              </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #histModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="histModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Historico de Hitos</h4>
+        <button type="button" class="close" (click)="histModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="container">
+          <div class="container">
+              <div class="row">
+                  <table class="table table-striped" *ngIf="_milestoneHists_filtered">
+                    <thead>
+                      <tr>
+                        <th class="HistHead">Estado</th>
+                        <th class="HistHead">Fecha</th>
+                        <th class="HistHead">Usuario</th>
+                        <th class="HistHead">Aprobado</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let hist of _milestoneHists_filtered">
+                        <td>{{hist.SolFacState.Name}}</td>
+                        <td>{{hist.Date | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{hist.User.Name}}</td>
+                        <td class="text-center"><img [src]="getOkCancelImage(hist.Canceled)"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Nuevo Hito</h4>
+        <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12" *ngIf="myForm != null">
+                <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm.value, myForm.valid, myModal)">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" formControlName="Name" placeholder="">
+
+                        <small class="text-danger" [hidden]="myForm.controls.Name.valid || (myForm.controls.Name.pristine && !submitted)">
+                            El Nombre es requerido (mínimo 5 caracteres).
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto</label>
+                        <input type="text" class="form-control" formControlName="Monto" placeholder="">
+
+                        <small class="text-danger" [hidden]="myForm.controls.Monto.valid || (myForm.controls.Monto.pristine && !submitted)">
+                            El Monto es requerido.
+                        </small>
+                    </div>
+                    <div>&nbsp;</div>
+                    <button type="button" class="btn btn-secondary" (click)="myModal.hide()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="saveNewHito">Guardar</button>
+                </form>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #editHito="bs-modal" id="editHito" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editHitoLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modificar Hito</h4>
+        <button type="button" class="close" (click)="hideEditHitoModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12" *ngIf="editForm != null">
+                <form [formGroup]="editForm" novalidate (ngSubmit)="edit(editForm.value, editForm.valid, editHito)">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" formControlName="Name" placeholder="" >
+
+                        <small class="text-danger" [hidden]="editForm.controls.Name.valid || (editForm.controls.Name.pristine && !submitted)">
+                            El Nombre es requerido (mínimo 5 caracteres).
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto</label>
+                        <input type="text" class="form-control" formControlName="Monto" placeholder="">
+
+                        <small class="text-danger" [hidden]="editForm.controls.Monto.valid || (editForm.controls.Monto.pristine && !submitted)">
+                            El Monto es requerido.
+                        </small>
+                    </div>
+                    <div>&nbsp;</div>
+                    <button type="button" class="btn btn-secondary" (click)="hideEditHitoModal()" [class.hidden]="bDividir">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="editHitoSave" [class.hidden]="bDividir">Guardar</button>
+                </form>
+
+                <div class="row">
+                  &nbsp;
+                </div>
+
+
+                  <form #dividedHito1="ngForm" class="form-inline">
+                    <button type="button" class="btn btn-primary col-xs-3 pull-right" id="dividirHito" (click)="DividirClick()">Dividir Hito</button>
+                    <input type="text" class="form-control col-xs-1" id="txtDividirCant" name="dividirCant" [(ngModel)]="dividirCant" [class.hidden]="!bDividir" (change)="txtDividirChange()">
+                  </form>
+
+
+                  <form #dividedHito2="ngForm" *ngIf="canShowFormHitosDivididos">
+
+                    <div *ngFor="let dHito of hitosDivididos; let i = index">
+
+                        <div class="container">
+                            <div class="row  vertical-space">
+                              <div class="col-xs-8">
+                                  <label class="col-xs-2">Nombre </label>
+                                  <div class="col-xs-10">
+                                    <input type="text" #dHito{{i}}Name id="dHito{{i}}Name" class="form-control" name="DividirName_{{i}}" [(ngModel)]="dHito.Name" pattern=".{5,}" placeholder="" >
+                                  </div>
+                                  <small class="text-danger" [hidden]="ValidarCamposDivididos_Nombre(i)">
+                                      El Nombre es requerido (mínimo 5 caracteres).
+                                  </small>
+                              </div>
+
+                              <div class="col-xs-3">
+                                &nbsp; &nbsp;
+                              </div>
+
+                              <div class="col-xs-3">
+                                  <label class="col-xs-2">Monto</label>
+                                  <div class="col-xs-10">
+                                    <input type="text" class="form-control" id="dHito{{i}}Monto" name="DividirMonto_{{i}}" [(ngModel)]="dHito.Monto" placeholder="">
+                                  </div>
+
+                                  <small class="text-danger" [hidden]="ValidarCamposDivididos_Monto(i)" >
+                                      El Monto es requerido.
+                                  </small>
+                              </div>
+                            </div>
+
+                        </div>
+                  </div>
+
+                  <hr>
+
+                  <div class="form-group">
+                    <button type="button" *ngIf="bDividir" class="btn btn-primary" id="saveHitosDivididos" (click)="SaveHitosDivididos(editHito)">Guardar</button>
+                  </div>
+
+                </form>
+
+
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

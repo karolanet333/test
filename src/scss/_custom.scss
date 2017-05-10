@@ -1,0 +1,160 @@
+// Here you can add other styles
+.langs {
+    margin-top: 0.65em;
+}
+.margin-0 {
+    margin: 0 !important;
+    .border-top {
+        border-top: 1px solid #e3e8ec;
+    }
+    .border-card {
+        border-right: 1px solid #e3e8ec;
+    }
+    .no-border-right {
+        border-right: transparent;
+    }
+    .no-border-left {
+        border-left: transparent;
+    }
+}
+.nav-link-item {
+    color: #0666b3 !important;
+    font-size: 1.2em;
+}
+.main {
+    .breadcrumb {
+        position: fixed;
+        width: 100%;
+        z-index: 200;
+    }
+    .container-fluid{
+        margin-top: 65px;
+    }
+}
+
+.no-border{
+    border-width:0;
+}
+
+.control-xs{
+    padding:0;
+    max-height:23px;
+    min-height:23px;
+}
+
+.control-short{
+    padding:0;
+    max-height:29px;
+    min-height:29px;
+}
+
+.control-tall{
+    padding:0;
+    max-height:35px;
+    min-height:35px;
+}
+
+.text-right{
+    direction: rtl;
+}
+
+.form-control{
+    color: #444d58 !important;
+}
+
+.form-control[readonly]{
+    background-color: white;
+}
+
+.vertical-space{
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+.v-space{
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+.horizontal-space{
+    margin-left:20px;
+    margin-right:20px;
+}
+
+.h-space{
+    margin-left:20px;
+    margin-right:20px;
+}
+
+.bordes-redondeados{
+    border-radius:5px;
+}
+
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.h-space-l{
+    margin-left: 20px;
+}
+
+.h-space-r{
+    margin-right: 20px;
+}
+
+.table-button-height{
+    min-height: 38px;
+    height:38px;
+    max-height: 38px;
+}
+
+.table-button-width{
+    width: 50px;
+}
+
+.max-button-width{
+    max-width: 60px;
+}
+
+@media print {
+    .breadcrumb{
+        display: none;
+    }
+
+    #ModuleName{
+        display: none;
+    }
+
+    .navbar-toggler{
+        display: none;
+    }
+
+    .main .container-fluid{
+        margin-top:0px;
+    }
+
+    .header-fixed .app-body{
+        margin-top:0px;
+    }
+
+    .app-header.navbar{
+        display: none;
+    }
+}

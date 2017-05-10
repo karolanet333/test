@@ -1,0 +1,93 @@
+<div class="card-block" *ngIf="customersRoutingService.showServices">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <h4 class="card-title mb-0">Servicios
+                <button class="btn btn-success pull-right" data-toggle="modal" (click)="myModal.show()" title="Nuevo Servicio"><span class="fa fa-plus"></span>&nbsp;</button>
+            </h4>
+            <div>&nbsp;</div>
+        </div><!--/.col-->
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <select class="form-control" [(ngModel)] = "selectedType" [ngModelOptions]="{standalone: true}" (change)="filter()">
+                <option value="0">Todos</option>
+                <option value="1">Activos</option>
+                <option value="2">Inactivos</option>
+            </select>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6"></div>
+        <div class="col-sm-12 col-md-2 col-lg-2">
+
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    <table class="table table-hover table-outline mb-0">
+        <tbody *ngIf="_servicesCustomer">
+            <tr *ngFor="let sc of _servicesCustomer">
+                <td>
+                    <div>{{sc.Name}}  <strong class="text-primary" *ngIf="sc.Description">({{sc.Description}})</strong></div>
+                    <div class="small text-muted">
+                        Registrado: {{sc.StartDate | date: 'MMM dd, yyyy'}}
+                    </div>
+                </td>
+                <td>
+                    <a class="btn btn-info pull-right" [routerLink]="['./service', sc.Id ]">Ver Detalles</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title">Nuevo Servicio</h4>
+            <button type="button" class="close" (click)="myModal.hide(); clearForm();" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm.value, myForm.valid, myModal)">
+                        <div class="form-group row">
+                            <label class="col-md-3">Nombre</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" formControlName="Name" id="newService_Name">
+                                <small class="text-danger" [hidden]="myForm.controls.Name.valid || (myForm.controls.Name.pristine && !submitted)">
+                                    El Nombre es requerido (mínimo 5 caracteres).
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3">Description</label>
+                            <div class="col-md-9">
+                                <textarea formControlName="Description" rows="3" class="form-control" placeholder="" id="newService_Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3">Estado</label>
+                            <div class="col-md-9">
+                                <select class="form-control" formControlName="IdStatus" id="newService_IdStatus">
+                                    <option value="1">Activo</option>
+                                    <option value="2">Inactivo</option>
+                                </select>
+                                <small class="text-danger" [hidden]="myForm.controls.IdStatus.valid || (myForm.controls.IdStatus.pristine && !submitted)">
+                                    El Estado es requerido.
+                                </small>
+                            </div>
+                        </div>
+                        <div>&nbsp;</div>
+                        <button type="button" class="btn btn-secondary" (click)="myModal.hide()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+</div>
+
+<router-outlet></router-outlet>

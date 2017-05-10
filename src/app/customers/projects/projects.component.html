@@ -1,0 +1,248 @@
+<div class="col-sm-12 col-md-12 col-lg-12" *ngIf="customersRoutingService.showProjects">
+    <h4 class="card-title mb-0">
+        Proyectos 
+        <button class="btn btn-success pull-right" data-toggle="modal" (click)="myModal.show()"><span class="fa fa-plus"></span></button>
+    </h4>
+    <div>&nbsp;</div>
+</div>
+<div class="col-sm-12 col-md-10 col-lg-10"></div>
+<div class="col-sm-12 col-md-2 col-lg-2">
+    
+</div>
+
+<!--<div>&nbsp;</div>-->
+<table class="table table-hover table-outline mb-0" *ngIf="customersRoutingService.showProjects">
+    <tbody *ngIf="_projects">
+        <tr *ngFor="let project of _projects">
+            <td>
+                <div>{{project.Name}}  <strong class="text-primary" *ngIf="project.Description">({{project.Description}})</strong></div>
+            </td>
+            <td>
+                <a class="btn btn-info pull-right" [routerLink]="['./project', project.Id ]">Ver Detalles</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Nuevo Proyecto</h4>
+        <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <form *ngIf="myForm != null" [formGroup]="myForm" novalidate (ngSubmit)="save(myForm.value, myForm.valid, myModal)">
+                    <div class="form-group row">
+                        <label class="col-md-3">Nombre</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" formControlName="Name">
+                            <small class="text-danger" [hidden]="myForm.controls.Name.valid || (myForm.controls.Name.pristine && !submitted)">
+                                El Nombre es requerido (mínimo 2 caracteres).
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Description</label>
+                        <div class="col-md-9">
+                            <textarea formControlName="Description" rows="3" class="form-control" placeholder=""></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Gerente de Proyecto</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" formControlName="ProjectManager">
+                            <small class="text-danger" [hidden]="myForm.controls.ProjectManager.valid || (myForm.controls.ProjectManager.pristine && !submitted)">
+                                El Nombre del Gerente de Proyecto es requerido (mínimo 5 caracteres).
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Ingresos estimados</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" formControlName="EstimatedEarnings">
+                            <small class="text-danger" [hidden]="myForm.controls.EstimatedEarnings.valid || (myForm.controls.EstimatedEarnings.pristine && !submitted)">
+                                Es requerido un monto mínimo.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Analítica</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" formControlName="Analytics">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Orden de compra</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" formControlName="PurchaseOrder">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3">Link a la oportunidad que dio origen a ese proyecto</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" formControlName="Link">
+                        </div>
+                    </div>
+
+                    <div>&nbsp;</div>
+                    <button type="button" class="btn btn-secondary" (click)="myModal.hide()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--INICIO DETALLE -->
+<!--
+<div class="row" *ngIf="customersRoutingService.showProjectDetail">
+    <div class="col-md-12">
+        <div class="card" >
+            <div class="card-header">
+                Detalles de Proyecto.-
+            </div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Nombre</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.Name }} &nbsp;</p>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Cliente</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_customer">{{ _customer.Name }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-3 form-control-label">Descripción</label>
+                              <div class="col-md-9">
+                                <p class="form-control" *ngIf="_project">{{ _project.Description }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Fecha de Inicio</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.StartDate | date: 'dd/MM/yyyy' }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Fecha de Finalización</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.EndDate | date: 'dd/MM/yyyy' }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Gerente del Proyecto</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.ProjectManager }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Ingresos Estimados</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.EstimatedEarnings }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Analítica</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.Analytics }} &nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Orden de compra</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_project">{{ _project.PurchaseOrder }} &nbsp;</p>
+                              </div>
+                            </div> 
+                          </div>
+                          <div class="col-sm-12 col-md-12 col-lg-12">
+                              <div class="form-group row">
+                                <label class="col-md-4 form-control-label">Link a la oportunidad que dio origen a ese proyecto</label>
+                                <div class="col-md-8">
+                                  <p class="form-control" *ngIf="_project">{{ _project.Link }} &nbsp;</p>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <h4 class="card-title mb-0">Hitos de Facturación</h4>
+                      <div>&nbsp;</div>
+                    </div>
+                    <div class="col-sm-12 col-md-10 col-lg-10"></div>
+                    <div class="col-sm-12 col-md-2 col-lg-2">
+                        
+                        <button class="btn btn-success btn-block" data-toggle="modal" (click)="hitoId=0; myModal.show()">Nuevo Hito</button>
+
+                    </div>
+                </div>
+                <div>&nbsp;</div>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Fecha</th>
+                      <th>Monto</th>
+                      <th>Estado</th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="_milestones">
+                    <tr *ngFor="let milestone of _milestones; let i = index">
+                      <td>{{ milestone.Name }}</td>
+                      <td>{{ milestone.ScheduledDate | date: 'dd/MM/yyyy' }}</td>
+                      <td>{{ milestone.Monto }}</td>
+                      <td>
+                        <span class="badge badge-success">{{ milestone.Status }}</span>
+                      </td>
+                      <td>
+                        <a class="btn btn-success btn-block" [routerLink]="['./hito', milestone.Id ]">Generar</a>
+                      </td>
+                      <td>
+                        <button class="btn btn-info btn-block" (click)="hitoId=milestone.Id; initForm(_project.IdCustomer, i); myModal.show()">Editar</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+<!--FIN DETALLE-->
+
+<router-outlet></router-outlet>
+
+<!--<app-upload-file-test>  </app-upload-file-test>-->
+
+
+

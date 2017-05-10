@@ -1,0 +1,67 @@
+<div class="row" >
+    <div class="col-md-12">
+        <div class="card" *ngIf="customersRoutingService.showServiceDetail">
+            <div class="card-header">
+                Detalles de Servicio
+            </div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Nombre</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_serviceCustomer">{{ _serviceCustomer.Name }}&nbsp;</p>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Cliente</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_customer">{{ _customer.Name }}&nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-3 form-control-label">Descripción</label>
+                              <div class="col-md-9">
+                                <p class="form-control" *ngIf="_serviceCustomer">{{ _serviceCustomer.Description }}&nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-4 form-control-label">Fecha de Inicio</label>
+                              <div class="col-md-8">
+                                <p class="form-control" *ngIf="_serviceCustomer">{{ _serviceCustomer.StartDate | date: 'dd/MM/yyyy' }}&nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group row">
+                              <label class="col-md-3 form-control-label">Fecha de Finalización</label>
+                              <div class="col-md-9">
+                                <p class="form-control" *ngIf="_serviceCustomer">{{ _serviceCustomer.EndDate | date: 'dd/MM/yyyy' }}&nbsp;</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+            
+            
+        </div>
+
+        <app-projects></app-projects>
+
+
+    </div>
+</div>
+
+
+

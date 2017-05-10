@@ -1,0 +1,15 @@
+
+
+<div class="row" *ngIf="customersRoutingService.showCustomerDetail">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4><span *ngIf="_customer != null">{{_customer.Name}}</span></h4>
+            </div>
+            
+            <app-services></app-services>
+        </div>
+    </div>
+</div>
+
+
